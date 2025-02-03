@@ -7,7 +7,7 @@ from collections import Counter
 import time
 from google.api_core import exceptions
 
-GEMINI_API_KEY = "AIzaSyCQ9Zws0iTHWo7Yf0Nh4ethb3eLiaZKvLk"
+GEMINI_API_KEY = "" # 차피 api 증발함.
 
 # JSON 파일 읽기
 print("Reading JSON file...")
