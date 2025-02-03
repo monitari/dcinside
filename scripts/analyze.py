@@ -1,3 +1,4 @@
+# Description: 글쓴이의 제목들을 요약하는 스크립트. 다만 허접한 결과. 수정 요망.
 import json
 import os
 import requests

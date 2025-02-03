@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCINSIDE 통계</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {{
+      --primary-color: #007bff;
+      --background-color: #ffffff;
+      --text-color: #333333;
+      --border-color: #e0e0e0;
+    }}
+
+    [data-theme='dark'] {{
+      --primary-color: #4da3ff;
+      --background-color: #1a1a1a;
+      --text-color: #ffffff;
+      --border-color: #444444;
+    }}
+
+    body {{
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }}
+
+    .container {{
+      max-width: 1200px;
+      margin: 0 auto;
+    }}
+
+    h1, h2 {{
+      font-weight: 300;
+      color: var(--primary-color);
+    }}
+
+    h1 {{
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }}
+
+    .gallery-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      gap: 2rem;
+    }}
+
+    .gallery-info {{
+      flex: 1;
+    }}
+
+    .gallery-info h2 {{
+      font-size: 2.5rem;
+      margin-top: 0.2rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }}
+
+    .gallery-info h2 .name {{
+      font-weight: 700;
+    }}
+
+    .gallery-info h2 .rank {{
+      font-size: 1.2rem;
+      font-weight: 400;
+    }}
+
+    .gallery-info h2 .creation-date {{
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.7;
+    }}
+
+    .gallery-info p {{
+      margin: 0.5rem 0;
+    }}
+
+    .gallery-info .managers {{
+      font-size: 0.8rem;
+      display: flex;
+      gap: 5rem;
+    }}
+
+    .gallery-cover {{
+      width: 275px;
+      height: 175px;
+      object-fit: cover;
+      border-radius: 8px;
+    }}
+
+    .stats-container {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }}
+
+    .stat-card {{
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+      min-width: 120px;
+    }}
+
+    .stat-card h3 {{
+      font-weight: 400;
+      font-size: 0.9rem;
+      margin: 0;
+      color: var(--text-color);
+    }}
+
+    .stat-card p {{
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0.5rem 0 0;
+      color: var(--primary-color);
+    }}
+
+    table {{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }}
+
+    th, td {{
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }}
+
+    th {{
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+    }}
+
+    tr:last-child td {{
+      border-bottom: none;
+    }}
+
+    .theme-toggle {{
+      cursor: pointer;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }}
+
+    .theme-toggle:hover {{
+      background-color: #0056b3;
+    }}
+
+    @media (max-width: 768px) {{
+      .gallery-header {{
+        flex-direction: column;
+      }}
+      .gallery-cover {{
+        width: 275px; height: 175px; object-fit: cover; border-radius: 8px;
+      }}
+      .stats-container {{
+        flex-direction: column;
+      }}
+      table {{
+        font-size: 14px;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <span>DCINSIDE 통계</span>
+      <button class="theme-toggle" onclick="toggleTheme()">다크 모드</button>
+    </h1>
+    <div class="gallery-header">
+      <div class="gallery-info">
+        <h2>
+          <span class="name">{name}</span>
+          <span class="rank">{rank_text} {rank_num}</span>
+          <span class="creation-date">개설일 | {creation_date}</span>
+        </h2>
+        <p>{intro}</p>
+        <div class="managers">
+          <span>매니저 | {manager}</span>
+          <span>부매니저 | {sub_manager}</span>
+        </div>
+      </div>
+      <img class="gallery-cover" src="{cover}" alt="갤러리 커버">
+    </div>
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>총 게시물</h3>
+        <p>{total_posts}</p>
+      </div>
+      <div class="stat-card">
+        <h3>총 사용자</h3>
+        <p>{total_users}</p>
+      </div>
+      <div class="stat-card">
+        <h3>평균 게시물 수</h3>
+        <p>{average_posts}</p>
+      </div>
+      <div class="stat-card">
+        <h3>기준 날짜</h3>
+        <p>{target_date}</p>
+      </div>
+    </div>
+    <!-- 랭킹 선택 드롭다운 -->
+    <div style="margin-bottom:1rem;">
+      <select id="rankingSelect" onchange="changeRanking()">
+        <option value="postRanking">게시글 수 랭킹</option>
+        <option value="viewRanking">게시글 조회수 랭킹</option>
+        <option value="recommendRanking">게시글 추천수 랭킹</option>
+        <option value="commentRanking">게시글 댓글수 랭킹</option>
+        <option value="totalRanking">총 점수 랭킹 (게시글수+조회수+추천수+댓글수)</option>
+      </select>
+    </div>
+    <!-- 각 랭킹 테이블 영역 (최초엔 게시글 수 랭킹만 표시) -->
+    <div id="postRanking">
+      <h2>게시글 수 랭킹</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>랭킹</th>
+            <th>닉</th>
+            <th>아이디/아이피</th>
+            <th>글 수</th>
+            <th>지분(%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranking_rows}
+        </tbody>
+      </table>
+    </div>
+    <div id="viewRanking" style="display:none;">
+      <h2>게시글 조회수 랭킹</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>랭킹</th>
+            <th>닉</th>
+            <th>아이디/아이피</th>
+            <th>조회수 합계</th>
+          </tr>
+        </thead>
+        <tbody>
+          {view_ranking_rows}
+        </tbody>
+      </table>
+    </div>
+    <div id="recommendRanking" style="display:none;">
+      <h2>게시글 추천수 랭킹</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>랭킹</th>
+            <th>닉</th>
+            <th>아이디/아이피</th>
+            <th>추천수 합계</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recommend_ranking_rows}
+        </tbody>
+      </table>
+    </div>
+    <div id="commentRanking" style="display:none;">
+      <h2>게시글 댓글수 랭킹</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>랭킹</th>
+            <th>닉</th>
+            <th>아이디/아이피</th>
+            <th>댓글수 합계</th>
+          </tr>
+        </thead>
+        <tbody>
+          {comment_ranking_rows}
+        </tbody>
+      </table>
+    </div>
+    <div id="totalRanking" style="display:none;">
+      <h2>총 점수 랭킹 (게시글수+조회수+추천수+댓글수)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>랭킹</th>
+            <th>닉</th>
+            <th>아이디/아이피</th>
+            <th>총 점수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {total_ranking_rows}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    function changeRanking() {{
+      var selected = document.getElementById('rankingSelect').value;
+      var ids = ["postRanking", "viewRanking", "recommendRanking", "commentRanking", "totalRanking"];
+      ids.forEach(function(id) {{
+        document.getElementById(id).style.display = (id===selected) ? "block" : "none";
+      }});
+    }}
+    function toggleTheme() {{
+      var body = document.body;
+      var current = body.getAttribute('data-theme') || 'light';
+      var newTheme = (current === 'dark') ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      document.querySelector('.theme-toggle').textContent = (newTheme === 'dark') ? '라이트 모드' : '다크 모드';
+    }}
+    window.onload = changeRanking;
+  </script>
+</body>
+</html>
